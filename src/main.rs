@@ -42,7 +42,7 @@ fn default_width() -> f32 {
 }
 
 fn default_height() -> f32 {
-    0.9
+    0.5
 }
 
 fn default_circular() -> bool {
