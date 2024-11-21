@@ -1,5 +1,5 @@
 # wleave
-![AUR version](https://img.shields.io/aur/version/wleave-git) 
+<!-- ![AUR version](https://img.shields.io/aur/version/wleave-git) --> 
 ![GitHub](https://img.shields.io/github/license/AMNatty/wleave)
 
 A Wayland-native logout script written in Gtk3
