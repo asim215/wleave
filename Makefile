@@ -1,5 +1,6 @@
 ./target/release/wleave: $(wildcard src/**.rs)
-	cargo build --frozen --release --all-features
+	# cargo build --frozen --release --all-features
+	cargo build --locked --release --all-features
 
 .PHONY: wleave
 wleave: ./target/release/wleave
