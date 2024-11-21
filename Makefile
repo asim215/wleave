@@ -1,5 +1,5 @@
 ./target/release/wleave: $(wildcard src/**.rs)
-	cargo build --release --all-features
+	cargo build --frozen --release --all-features
 
 .PHONY: wleave
 wleave: ./target/release/wleave
@@ -15,3 +15,7 @@ all: wleave
 .PHONY: clean
 clean:
 	rm -rf ./target ./completions_generated
+
+.PHONY: install
+install:
+	cargo install --path .
