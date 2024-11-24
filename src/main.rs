@@ -6,6 +6,7 @@ use std::time::Duration;
 
 use gtk4::gdk::{keys, EventKey};
 use gtk4::gdk::{Display, Event};
+use gtk4::gio::File;
 use gtk4::glib::{timeout_add_local_once, Propagation};
 use gtk4::prelude::*;
 use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label};
@@ -142,10 +143,16 @@ fn load_css_from_file(path: &dyn AsRef<Path>) -> Result<Option<CssProvider>, Str
     }
 
     let provider = CssProvider::new();
-    provider
-        // .load_from_file(&gio::Path)
-        .load_from_file(&gio::File::for_path(path))
-        .map_err(|e| format!("Failed to load CSS: {e}"))?;
+    provider.load_from_path(path);
+    // load_from_file(&File::for_path(path));
+
+    // provider.load_from_file(&File::for_path(path));
+    // TODO: impl match on error
+
+    // provider
+    //     // .load_from_file(&gio::Path)
+    //     .load_from_file(&gio::File::for_path(path))
+    //     .map_err(|e| format!("Failed to load CSS: {e}"))?;
     Ok(Some(provider))
 }
 
