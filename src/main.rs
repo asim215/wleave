@@ -1,15 +1,16 @@
 use clap::Parser;
+use gtk4::gdk::ffi::{GDK_KEY_Escape, GDK_KEY_MATCH_EXACT};
 use std::path::Path;
 use std::process::Command;
 use std::sync::Arc;
 use std::time::Duration;
 
-use gtk4::gdk::{keys, EventKey};
-use gtk4::gdk::{Display, Event};
-use gtk4::gio::File;
+// use gdk::KeyMatch;
+// use gtk4::gdk::EventKey;
+use gtk4::gdk::{Display, KeyEvent, KeyMatch};
 use gtk4::glib::{timeout_add_local_once, Propagation};
 use gtk4::prelude::*;
-use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label};
+use gtk4::{Application, ApplicationWindow, CssProvider, Label};
 use gtk4_layer_shell::{KeyboardMode, LayerShell};
 use serde::Deserialize;
 use wleave::cli_opt::{Args, Protocol};
@@ -179,31 +180,40 @@ fn on_option(command: &str, delay_ms: u32, window: ApplicationWindow) {
     window.hide();
 }
 
-fn handle_key(config: &Arc<AppConfig>, window: &ApplicationWindow, e: &EventKey) -> Propagation {
-    match e.keyval() {
-        keys::constants::Escape => {
-            window.close();
-        }
-        other => {
-            let key = other
-                .to_unicode()
-                .map(|c| c.to_string())
-                .or_else(|| other.name().map(|s| s.to_string()));
+fn handle_key(config: &Arc<AppConfig>, window: &ApplicationWindow, e: &KeyEvent) -> Propagation {
+    // match KeyEvent::matches(e, GDK_KEY_Escape, None) {
+    //     GDK_KEY_MATCH_EXACT => {
+    //         window.close();
+    //     }
+    //     other => {
+    //         window.close();
+    //     }
+    // }
 
-            if let Some(ref key_name) = key {
-                let button = config
-                    .button_config
-                    .buttons
-                    .iter()
-                    .find(|b| b.keybind == *key_name);
+    // match e.keyval() {
+    //     keys::constants::Escape => {
+    //         window.close();
+    //     }
+    //     other => {
+    //         let key = other
+    //             .to_unicode()
+    //             .map(|c| c.to_string())
+    //             .or_else(|| other.name().map(|s| s.to_string()));
 
-                if let Some(WButton { action, .. }) = button {
-                    let state_action = action.clone();
-                    on_option(&state_action, config.delay_ms, window.clone());
-                }
-            }
-        }
-    }
+    //         if let Some(ref key_name) = key {
+    //             let button = config
+    //                 .button_config
+    //                 .buttons
+    //                 .iter()
+    //                 .find(|b| b.keybind == *key_name);
+
+    //             if let Some(WButton { action, .. }) = button {
+    //                 let state_action = action.clone();
+    //                 on_option(&state_action, config.delay_ms, window.clone());
+    //             }
+    //         }
+    //     }
+    // }
 
     Propagation::Proceed
 }
@@ -234,17 +244,23 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
     }
 
     if config.close_on_lost_focus {
-        window.connect_focus_out_event(|window, _| {
-            if window.is_visible() {
-                window.close();
-            }
+        if window.gets_focus_visible() {
+            window.close();
+        }
 
-            Propagation::Proceed
-        });
-    }
+        // window.connect_focus_out_event(|window, _| {
+        //     if window.is_visible() {
+        //         window.close();
+        //     }
+    };
+    // Propagation::Proceed
 
     let cfg = config.clone();
-    window.connect_key_press_event(move |window, e| handle_key(&cfg, window, e));
+    // gtk4::EventControllerKey::connect_key_pressed(window, move |window, e| {
+    //     handle_key(&cfg, window, e)
+    // });
+    // move |window, e| handle_key(&cfg, window, e));
+    // window.connect_key_press_event(move |window, e| handle_key(&cfg, window, e));
 
     let grid = gtk4::Grid::new();
 
