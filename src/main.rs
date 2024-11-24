@@ -5,6 +5,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use gtk4::gdk::{keys, EventKey, Screen};
+use gtk4::gdk::{Display, Event};
 use gtk4::glib::{timeout_add_local_once, Propagation};
 use gtk4::prelude::*;
 use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label, StyleContext};
@@ -239,6 +240,7 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
     let grid = gtk4::Grid::new();
 
     window.add(&grid);
+    // window.set_default_widget(Option<&grid>);
 
     grid.set_column_spacing(config.column_spacing);
     grid.set_row_spacing(config.row_spacing);
@@ -295,6 +297,7 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
     }
 
     window.show_all();
+    // window.show();
 }
 
 fn main() {
@@ -328,11 +331,16 @@ fn main() {
         .build();
 
     app.connect_startup(move |_| match load_css(args.css.as_ref()) {
-        Ok(css) => StyleContext::add_provider_for_screen(
-            &Screen::default().expect("Could not connect to a display."),
+        Ok(css) => gtk4::style_context_add_provider_for_display(
+            &Display::default().expect("Could not connect to a display."),
             &css,
             gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
         ),
+        // Ok(css) => StyleContext::add_provider_for_screen(
+        //     &Screen::default().expect("Could not connect to a display."),
+        //     &css,
+        //     gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        // ),
         Err(e) => eprintln!("Failed to load CSS: {e}"),
     });
 
