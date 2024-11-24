@@ -4,11 +4,11 @@ use std::process::Command;
 use std::sync::Arc;
 use std::time::Duration;
 
-use gtk::gdk::{keys, EventKey, Screen};
-use gtk::glib::{timeout_add_local_once, Propagation};
-use gtk::prelude::*;
-use gtk::{gio, Application, ApplicationWindow, CssProvider, Label, StyleContext};
-use gtk_layer_shell::LayerShell;
+use gtk4::gdk::{keys, EventKey, Screen};
+use gtk4::glib::{timeout_add_local_once, Propagation};
+use gtk4::prelude::*;
+use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label, StyleContext};
+use gtk4_layer_shell::LayerShell;
 use serde::Deserialize;
 use wleave::cli_opt::{Args, Protocol};
 
@@ -208,15 +208,15 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
     match config.protocol {
         Protocol::LayerShell => {
             window.init_layer_shell();
-            window.set_layer(gtk_layer_shell::Layer::Overlay);
+            window.set_layer(gtk4_layer_shell::Layer::Overlay);
             window.set_namespace("wleave");
             window.set_exclusive_zone(-1);
             window.set_keyboard_interactivity(true);
 
-            window.set_anchor(gtk_layer_shell::Edge::Left, true);
-            window.set_anchor(gtk_layer_shell::Edge::Right, true);
-            window.set_anchor(gtk_layer_shell::Edge::Top, true);
-            window.set_anchor(gtk_layer_shell::Edge::Bottom, true);
+            window.set_anchor(gtk4_layer_shell::Edge::Left, true);
+            window.set_anchor(gtk4_layer_shell::Edge::Right, true);
+            window.set_anchor(gtk4_layer_shell::Edge::Top, true);
+            window.set_anchor(gtk4_layer_shell::Edge::Bottom, true);
         }
         Protocol::Xdg => {
             window.fullscreen();
@@ -236,7 +236,7 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
     let cfg = config.clone();
     window.connect_key_press_event(move |window, e| handle_key(&cfg, window, e));
 
-    let grid = gtk::Grid::new();
+    let grid = gtk4::Grid::new();
 
     window.add(&grid);
 
@@ -256,14 +256,14 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
         };
 
         let justify = match bttn.justify.as_str() {
-            "center" => gtk::Justification::Center,
-            "fill" => gtk::Justification::Fill,
-            "left" => gtk::Justification::Left,
-            "right" => gtk::Justification::Right,
-            _ => gtk::Justification::Center,
+            "center" => gtk4::Justification::Center,
+            "fill" => gtk4::Justification::Fill,
+            "left" => gtk4::Justification::Left,
+            "right" => gtk4::Justification::Right,
+            _ => gtk4::Justification::Center,
         };
 
-        let button = gtk::Button::builder()
+        let button = gtk4::Button::builder()
             .label(&label)
             .name(&bttn.label)
             .hexpand(true)
@@ -331,7 +331,7 @@ fn main() {
         Ok(css) => StyleContext::add_provider_for_screen(
             &Screen::default().expect("Could not connect to a display."),
             &css,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
         ),
         Err(e) => eprintln!("Failed to load CSS: {e}"),
     });
