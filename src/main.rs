@@ -242,7 +242,9 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
 
     // grid.attach
 
-    window.add(&grid);
+    // window.add(&grid);
+    // try to add grid as child of Application
+    window.set_child(Option::Some(&grid));
 
     // window.action_state_changed(, )
     // window.set_default_widget(Option<&grid>);
