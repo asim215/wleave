@@ -143,6 +143,7 @@ fn load_css_from_file(path: &dyn AsRef<Path>) -> Result<Option<CssProvider>, Str
 
     let provider = CssProvider::new();
     provider
+        // .load_from_file(&gio::Path)
         .load_from_file(&gio::File::for_path(path))
         .map_err(|e| format!("Failed to load CSS: {e}"))?;
     Ok(Some(provider))
@@ -296,7 +297,8 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
         grid.attach(&button, x as i32, y as i32, 1, 1);
     }
 
-    window.show_all();
+    window.set_visible(true);
+    // window.show_all();
     // window.show();
 }
 
