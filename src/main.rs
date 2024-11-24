@@ -249,7 +249,7 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
 
     for (i, bttn) in config.button_config.buttons.iter().enumerate() {
         let label = if config.show_keybinds {
-            format!("{} [{}]", bttn.text, bttn.keybind)
+            format!("{}\n{}", bttn.text, bttn.keybind)
         } else {
             bttn.text.to_owned()
         };

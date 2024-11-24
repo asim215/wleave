@@ -34,7 +34,7 @@ pub struct Args {
     pub row_spacing: u32,
 
     /// Set the margin around buttons
-    #[arg(short = 'm', long, default_value_t = 230)]
+    #[arg(short = 'm', long, default_value_t = 0)]
     pub margin: i32,
 
     /// Set margin for the left of buttons
@@ -62,7 +62,7 @@ pub struct Args {
     pub close_on_lost_focus: bool,
 
     /// Show the associated key binds
-    #[arg(short = 'k', long)]
+    #[arg(short = 'k', long, default_value_t = true)]
     pub show_keybinds: bool,
 
     /// Use layer-shell or xdg protocol
