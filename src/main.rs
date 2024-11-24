@@ -4,12 +4,12 @@ use std::process::Command;
 use std::sync::Arc;
 use std::time::Duration;
 
-use gtk4::gdk::{keys, EventKey, Screen};
+use gtk4::gdk::{keys, EventKey};
 use gtk4::gdk::{Display, Event};
 use gtk4::glib::{timeout_add_local_once, Propagation};
 use gtk4::prelude::*;
 use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label};
-use gtk4_layer_shell::LayerShell;
+use gtk4_layer_shell::{KeyboardMode, LayerShell};
 use serde::Deserialize;
 use wleave::cli_opt::{Args, Protocol};
 
@@ -213,7 +213,8 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
             window.set_layer(gtk4_layer_shell::Layer::Overlay);
             window.set_namespace("wleave");
             window.set_exclusive_zone(-1);
-            window.set_keyboard_interactivity(true);
+            window.set_keyboard_mode(KeyboardMode::Exclusive);
+            // window.set_keyboard_interactivity(true);
 
             window.set_anchor(gtk4_layer_shell::Edge::Left, true);
             window.set_anchor(gtk4_layer_shell::Edge::Right, true);
