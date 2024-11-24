@@ -8,7 +8,7 @@ use gtk4::gdk::{keys, EventKey, Screen};
 use gtk4::gdk::{Display, Event};
 use gtk4::glib::{timeout_add_local_once, Propagation};
 use gtk4::prelude::*;
-use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label, StyleContext};
+use gtk4::{gio, Application, ApplicationWindow, CssProvider, Label};
 use gtk4_layer_shell::LayerShell;
 use serde::Deserialize;
 use wleave::cli_opt::{Args, Protocol};
@@ -240,7 +240,11 @@ fn app_main(config: &Arc<AppConfig>, app: &Application) {
 
     let grid = gtk4::Grid::new();
 
+    // grid.attach
+
     window.add(&grid);
+
+    // window.action_state_changed(, )
     // window.set_default_widget(Option<&grid>);
 
     grid.set_column_spacing(config.column_spacing);
